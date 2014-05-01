@@ -41,7 +41,7 @@ The `examples` folder contains example ligands in PDBQT format. For example, to 
 
 ## Change Log
 
-### 1.0 (under construction)
+### 1.0.0 (under construction)
 
 * Initial release.
 
