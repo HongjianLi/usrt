@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
 	{
 		ligand lig(cin);
 		if (lig.atoms.empty()) break;
+		bool output = false;
 		for (const auto& f : lig.frames)
 		{
 			const auto& r = lig.atoms[f.rotorYidx].coord; // Reference atom.
@@ -44,7 +45,9 @@ int main(int argc, char* argv[])
 				m[2] += d * d * d;
 			}
 			m[2] = cbrt(m[2] / (n - 1)) / m[1];
-			cout << ',' << m[0] << ',' << m[1] << ',' << m[2];
+			if (output) cout << ',';
+			cout << m[0] << ',' << m[1] << ',' << m[2];
+			output = true;
 		}
 		cout << endl;
 	}
