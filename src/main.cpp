@@ -6,7 +6,7 @@
 int main(int argc, char* argv[])
 {
 	cout.setf(ios::fixed, ios::floatfield);
-	cout << setprecision(3);
+	cout << setprecision(4);
 	while (true)
 	{
 		ligand lig(cin);
