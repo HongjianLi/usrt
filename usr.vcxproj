@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1788CA7B-A0E5-68A6-AC5C-6E5A5C099837}</ProjectGuid>
+    <ProjectGuid>{1788CA7B-A0E5-68A6-AC5C-6E5A5C099836}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="src\atom.hpp" />
@@ -20,7 +20,7 @@
   <ItemGroup>
     <ClCompile Include="src\atom.cpp" />
     <ClCompile Include="src\ligand.cpp" />
-    <ClCompile Include="src\usrt.cpp" />
+    <ClCompile Include="src\usr.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
