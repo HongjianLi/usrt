@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
 		ligand lig(cin);
 		if (lig.atoms.empty()) break;
 		const auto n = lig.atoms.size();
+		const auto v = 1.0 / n;
 
 		// Find the reference point ctd.
 		array<double, 3> ctd{};
@@ -29,7 +30,7 @@ int main(int argc, char* argv[])
 			{
 				ctd[i] += a.coord[i];
 			}
-			ctd[i] /= n;
+			ctd[i] *= v;
 		}
 
 		// Find the reference points cst and fct.
@@ -83,19 +84,19 @@ int main(int argc, char* argv[])
 				const auto d = dists[i];
 				m[0] += d;
 			}
-			m[0] /= n;
+			m[0] *= v;
 			for (size_t i = 0; i < n; ++i)
 			{
 				const auto d = dists[i] - m[0];
 				m[1] += d * d;
 			}
-			m[1] = sqrt(m[1] / (n - 1));
+			m[1] = sqrt(m[1] * v);
 			for (size_t i = 0; i < n; ++i)
 			{
 				const auto d = dists[i] - m[0];
 				m[2] += d * d * d;
 			}
-			m[2] = cbrt(m[2] / (n - 1)) / m[1];
+			m[2] = cbrt(m[2] * v) / m[1];
 			if (output) cout << ',';
 			cout << m[0] << ',' << m[1] << ',' << m[2];
 			output = true;

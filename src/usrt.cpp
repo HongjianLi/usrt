@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
 		{
 			const auto& r = lig.atoms[f.rotorYidx].coord; // Reference atom.
 			const auto n = f.childYidx - f.rotorYidx; // Number of atoms of the current frame.
+			const auto v = 1.0 / n;
 			if (n < 2) continue; // No way to compute 2nd and 3rd moments given only one sample.
 			vector<double> dists(n);
 			for (size_t i = 0; i < n; ++i)
@@ -32,19 +33,19 @@ int main(int argc, char* argv[])
 				const auto d = dists[i];
 				m[0] += d;
 			}
-			m[0] /= n;
+			m[0] *= v;
 			for (size_t i = 0; i < n; ++i)
 			{
 				const auto d = dists[i] - m[0];
 				m[1] += d * d;
 			}
-			m[1] = sqrt(m[1] / (n - 1));
+			m[1] = sqrt(m[1] * v);
 			for (size_t i = 0; i < n; ++i)
 			{
 				const auto d = dists[i] - m[0];
 				m[2] += d * d * d;
 			}
-			m[2] = cbrt(m[2] / (n - 1)) / m[1];
+			m[2] = cbrt(m[2] * v) / m[1];
 			if (output) cout << ',';
 			cout << m[0] << ',' << m[1] << ',' << m[2];
 			output = true;
