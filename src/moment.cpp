@@ -1,7 +1,7 @@
 #include <cmath>
 #include "moment.hpp"
 
-double distance(const array<double, 3>& p0, const array<double, 3>& p1)
+double dist(const array<double, 3>& p0, const array<double, 3>& p1)
 {
 	const auto d0 = p0[0] - p1[0];
 	const auto d1 = p0[1] - p1[1];

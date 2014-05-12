@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 			for (size_t i = 0; i < n; ++i)
 			{
 				const auto& a = lig.atoms[f.rotorYidx + i].coord;
-				dists[i] = distance(a, r);
+				dists[i] = dist(a, r);
 			}
 			const auto m = moments(dists, n, v);
 			if (output) cout << ',';

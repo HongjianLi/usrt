@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 		double fct_dist = -9999;
 		for (const auto& a : lig.atoms)
 		{
-			const auto this_dist = distance(a.coord, ctd);
+			const auto this_dist = dist(a.coord, ctd);
 			if (this_dist < cst_dist)
 			{
 				cst = a.coord;
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 		double ftf_dist = -9999;
 		for (const auto& a : lig.atoms)
 		{
-			const auto this_dist = distance(a.coord, fct);
+			const auto this_dist = dist(a.coord, fct);
 			if (this_dist > ftf_dist)
 			{
 				ftf = a.coord;
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 			vector<double> dists(n);
 			for (size_t i = 0; i < n; ++i)
 			{
-				dists[i] = distance(lig.atoms[i].coord, rpt);
+				dists[i] = dist(lig.atoms[i].coord, rpt);
 			}
 			const auto m = moments(dists, n, v);
 			if (output) cout << ',';
