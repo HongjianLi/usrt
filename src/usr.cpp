@@ -1,15 +1,7 @@
 #include <iostream>
 #include <iomanip>
-#include <cmath>
 #include "ligand.hpp"
-
-double dist(const array<double, 3>& p0, const array<double, 3>& p1)
-{
-	const auto d0 = p0[0] - p1[0];
-	const auto d1 = p0[1] - p1[1];
-	const auto d2 = p0[2] - p1[2];
-	return sqrt(d0*d0 + d1*d1 + d2*d2);
-}
+#include "moment.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -40,7 +32,7 @@ int main(int argc, char* argv[])
 		double fct_dist = -9999;
 		for (const auto& a : lig.atoms)
 		{
-			const auto this_dist = dist(a.coord, ctd);
+			const auto this_dist = distance(a.coord, ctd);
 			if (this_dist < cst_dist)
 			{
 				cst = a.coord;
@@ -58,7 +50,7 @@ int main(int argc, char* argv[])
 		double ftf_dist = -9999;
 		for (const auto& a : lig.atoms)
 		{
-			const auto this_dist = dist(a.coord, fct);
+			const auto this_dist = distance(a.coord, fct);
 			if (this_dist > ftf_dist)
 			{
 				ftf = a.coord;
@@ -69,34 +61,16 @@ int main(int argc, char* argv[])
 		// Aggregate the reference points for convenient processing.
 		array<array<double, 3>, 4> rps = { ctd, cst, fct, ftf };
 
-		// Compute the distributions and moments.
+		// Compute the distances to the reference points and their moments.
 		bool output = false;
 		for (const auto& rpt : rps)
 		{
 			vector<double> dists(n);
 			for (size_t i = 0; i < n; ++i)
 			{
-				dists[i] = dist(lig.atoms[i].coord, rpt);
+				dists[i] = distance(lig.atoms[i].coord, rpt);
 			}
-			array<double, 3> m{};
-			for (size_t i = 0; i < n; ++i)
-			{
-				const auto d = dists[i];
-				m[0] += d;
-			}
-			m[0] *= v;
-			for (size_t i = 0; i < n; ++i)
-			{
-				const auto d = dists[i] - m[0];
-				m[1] += d * d;
-			}
-			m[1] = sqrt(m[1] * v);
-			for (size_t i = 0; i < n; ++i)
-			{
-				const auto d = dists[i] - m[0];
-				m[2] += d * d * d;
-			}
-			m[2] = cbrt(m[2] * v) / m[1];
+			const auto m = moments(dists, n, v);
 			if (output) cout << ',';
 			cout << m[0] << ',' << m[1] << ',' << m[2];
 			output = true;

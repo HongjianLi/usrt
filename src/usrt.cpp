@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
-#include <cmath>
 #include "ligand.hpp"
+#include "moment.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -14,38 +14,24 @@ int main(int argc, char* argv[])
 		bool output = false;
 		for (const auto& f : lig.frames)
 		{
-			const auto& r = lig.atoms[f.rotorYidx].coord; // Reference atom.
-			const auto n = f.childYidx - f.rotorYidx; // Number of atoms of the current frame.
+			// Use rotorY as the only reference point.
+			const auto& r = lig.atoms[f.rotorYidx].coord;
+
+			// Find the number of atoms of the current frame.
+			const auto n = f.childYidx - f.rotorYidx;
 			const auto v = 1.0 / n;
-			if (n < 2) continue; // No way to compute 2nd and 3rd moments given only one sample.
+
+			// Skip frames that have only one atom.
+			if (n < 2) continue;
+
+			// Compute the distances to the reference point and their moments.
 			vector<double> dists(n);
 			for (size_t i = 0; i < n; ++i)
 			{
 				const auto& a = lig.atoms[f.rotorYidx + i].coord;
-				const auto d0 = a[0] - r[0];
-				const auto d1 = a[1] - r[1];
-				const auto d2 = a[2] - r[2];
-				dists[i] = sqrt(d0*d0 + d1*d1 + d2*d2);
+				dists[i] = distance(a, r);
 			}
-			array<double, 3> m{};
-			for (size_t i = 0; i < n; ++i)
-			{
-				const auto d = dists[i];
-				m[0] += d;
-			}
-			m[0] *= v;
-			for (size_t i = 0; i < n; ++i)
-			{
-				const auto d = dists[i] - m[0];
-				m[1] += d * d;
-			}
-			m[1] = sqrt(m[1] * v);
-			for (size_t i = 0; i < n; ++i)
-			{
-				const auto d = dists[i] - m[0];
-				m[2] += d * d * d;
-			}
-			m[2] = cbrt(m[2] * v) / m[1];
+			const auto m = moments(dists, n, v);
 			if (output) cout << ',';
 			cout << m[0] << ',' << m[1] << ',' << m[2];
 			output = true;

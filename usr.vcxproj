@@ -16,10 +16,12 @@
   <ItemGroup>
     <ClInclude Include="src\atom.hpp" />
     <ClInclude Include="src\ligand.hpp" />
+    <ClInclude Include="src\moment.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\atom.cpp" />
     <ClCompile Include="src\ligand.cpp" />
+    <ClCompile Include="src\moment.cpp" />
     <ClCompile Include="src\usr.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
