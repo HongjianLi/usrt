@@ -1,11 +1,14 @@
 CC=clang++ -std=c++11 -O2
 
-all: bin/usrt bin/usr
+all: bin/usrt bin/usr bin/usrscore
 
 bin/usrt: obj/atom.o obj/ligand.o obj/moment.o obj/usrt.o
 	${CC} -o $@ $^
 
 bin/usr: obj/atom.o obj/ligand.o obj/moment.o obj/usr.o
+	${CC} -o $@ $^
+
+bin/usrscore: obj/usrscore.o
 	${CC} -o $@ $^
 
 obj/%.o: src/%.cpp
