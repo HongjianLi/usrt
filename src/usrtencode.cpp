@@ -14,24 +14,33 @@ int main(int argc, char* argv[])
 		bool output = false;
 		for (const auto& f : lig.frames)
 		{
+			// Find the number of atoms of the current frame.
+			const auto n = f.childYidx - f.rotorYidx + f.branches.size();
+
+			// Initialize moment values.
+			array<double, 3> m{};
+
+			// Skip frames that have only one atom.
+			if (n >= 2)
+			{
+
 			// Use rotorY as the only reference point.
 			const auto& r = lig.atoms[f.rotorYidx].coord;
 
-			// Find the number of atoms of the current frame.
-			const auto n = f.childYidx - f.rotorYidx;
-			const auto v = 1.0 / n;
-
-			// Skip frames that have only one atom.
-			if (n < 2) continue;
-
 			// Compute the distances to the reference point and their moments.
+			const auto v = 1.0 / n;
 			vector<double> dists(n);
-			for (size_t i = 0; i < n; ++i)
+			size_t o = 0;
+			for (size_t i = f.rotorYidx; i < f.childYidx; ++i)
 			{
-				const auto& a = lig.atoms[f.rotorYidx + i].coord;
-				dists[i] = dist(a, r);
+				dists[o++] = dist(r, lig.atoms[i].coord);
 			}
-			const auto m = moments(dists, n, v);
+			for (const auto b : f.branches)
+			{
+				dists[o++] = dist(r, lig.atoms[lig.frames[b].rotorYidx].coord);
+			}
+			m = moments(dists, n, v);
+			}
 			if (output) cout << ',';
 			cout << m[0] << ',' << m[1] << ',' << m[2];
 			output = true;
