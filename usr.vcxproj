@@ -22,7 +22,7 @@
     <ClCompile Include="src\atom.cpp" />
     <ClCompile Include="src\ligand.cpp" />
     <ClCompile Include="src\moment.cpp" />
-    <ClCompile Include="src\usr.cpp" />
+    <ClCompile Include="src\usrencode.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
