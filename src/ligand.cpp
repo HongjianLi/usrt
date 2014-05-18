@@ -30,8 +30,14 @@ ligand::ligand(istream& is)
 			// Insert a new frame whose parent is the current frame.
 			frames.push_back(frame(current, atoms.size()));
 
+			// Get a pointer to the current frame.
+			auto& f = frames[current];
+
 			// Now the current frame is the newly inserted BRANCH frame.
 			current = frames.size() - 1;
+
+			// The parent frame has the current frame as one of its branches.
+			f.branches.push_back(current);
 
 			// The ending index of atoms of previous frame is the starting index of atoms of current frame.
 			frames[current - 1].childYidx = frames[current].rotorYidx;
