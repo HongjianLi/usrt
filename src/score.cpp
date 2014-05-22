@@ -4,6 +4,8 @@
 #include <vector>
 #include <array>
 #include <cmath>
+#include <numeric>
+#include <algorithm>
 using namespace std;
 
 vector<double> parse(const string& line)
@@ -62,9 +64,15 @@ int main(int argc, char* argv[])
 			}
 			scores[j] = s;
 		}
+		vector<size_t> scase(n);
+		iota(scase.begin(), scase.end(), 0);
+		sort(scase.begin(), scase.end(), [&scores](size_t val1, size_t val2)
+		{
+			return scores[val1] > scores[val2];
+		});
 		for (size_t j = 0; j < n; ++j)
 		{
-			cout << j << '\t' << scores[j] << endl;
+			cout << j << '\t' << scase[j] << '\t' << headers[scase[j]] << '\t' << scores[scase[j]] << endl;
 		}
 	}
 }
