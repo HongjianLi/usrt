@@ -9,7 +9,7 @@ bin/score: obj/score.o
 	${CC} -o $@ $^
 
 obj/%.o: src/%.cpp
-	${CC} -o $@ $< -c -std=c++11 -O2
+	${CC} -o $@ $< -c -std=c++11 -O2 -mavx
 
 clean:
 	rm -f bin/encode bin/score obj/*

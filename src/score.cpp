@@ -6,6 +6,7 @@
 #include <cmath>
 #include <numeric>
 #include <algorithm>
+#include <immintrin.h>
 using namespace std;
 
 vector<double> parse(const string& line)
@@ -29,6 +30,8 @@ vector<double> parse(const string& line)
 
 int main(int argc, char* argv[])
 {
+	const auto m256s = _mm256_set1_pd(-0. ); // -0.  = 1 << 63
+
 	// Read the feature file.
 	string line;
 	vector<vector<double>> features;
@@ -50,19 +53,28 @@ int main(int argc, char* argv[])
 		const size_t qn = q.size();
 		const double qv = 1.0 / qn;
 		vector<double> scores(n);
-		for (size_t j = 0; j < n; ++j)
+		for (size_t k = 0; k < n; ++k)
 		{
-			const auto& r = features[j];
+			const auto& l = features[k];
 			double s = 0;
-			if (r.size() == qn)
+			if (l.size() == qn)
 			{
-				for (size_t i = 0; i < qn; ++i)
+				const size_t m = qn / 4;
+				const size_t t = 4 * m;
+				size_t i = 0;
+				array<double, 4> a;
+				for (; i < t; i += 4)
 				{
-					s += fabs(q[i] - r[i]);
+					_mm256_stream_pd(a.data(), _mm256_andnot_pd(m256s, _mm256_sub_pd(_mm256_load_pd(&q[i]), _mm256_load_pd(&l[i]))));
+					s += a[0] + a[1] + a[2] + a[3];
+				}
+				for (; i < qn; ++i)
+				{
+					s += fabs(q[i] - l[i]);
 				}
 				s = 1 / (1 + s * qv);
 			}
-			scores[j] = s;
+			scores[k] = s;
 		}
 		vector<size_t> scase(n);
 		iota(scase.begin(), scase.end(), 0);
@@ -70,9 +82,9 @@ int main(int argc, char* argv[])
 		{
 			return scores[val1] > scores[val2];
 		});
-		for (size_t j = 0; j < n; ++j)
+		for (size_t k = 0; k < n; ++k)
 		{
-			cout << j << '\t' << scase[j] << '\t' << headers[scase[j]] << '\t' << scores[scase[j]] << endl;
+			cout << k << '\t' << scase[k] << '\t' << headers[scase[k]] << '\t' << scores[scase[k]] << endl;
 		}
 	}
 }
