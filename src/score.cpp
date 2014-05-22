@@ -84,7 +84,8 @@ int main(int argc, char* argv[])
 		});
 		for (size_t k = 0; k < n; ++k)
 		{
-			cout << k << '\t' << scase[k] << '\t' << headers[scase[k]] << '\t' << scores[scase[k]] << endl;
+			const size_t c = scase[k];
+			cout << k << '\t' << c << '\t' << headers[c] << '\t' << scores[c] << endl;
 		}
 	}
 }
