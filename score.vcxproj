@@ -16,6 +16,9 @@
   <ItemGroup>
     <ClCompile Include="src\score.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\aligned_allocator.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>

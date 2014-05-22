@@ -8,11 +8,12 @@
 #include <numeric>
 #include <algorithm>
 #include <immintrin.h>
+#include "aligned_allocator.hpp"
 using namespace std;
 
-vector<double> parse(const string& line)
+vector<double, aligned_allocator<double, sizeof(__m256d)>> parse(const string& line)
 {
-	vector<double> r;
+	vector<double, aligned_allocator<double, sizeof(__m256d)>> r;
 	if (line.size())
 	{
 		r.reserve(12);
@@ -35,7 +36,7 @@ int main(int argc, char* argv[])
 
 	// Read the feature file.
 	string line;
-	vector<vector<double>> features;
+	vector<vector<double, aligned_allocator<double, sizeof(__m256d)>>> features;
 	features.reserve(23129083);
 	for (ifstream ifs(argv[1]); getline(ifs, line); features.push_back(parse(line)));
 	const size_t n = features.size();
@@ -65,7 +66,7 @@ int main(int argc, char* argv[])
 				array<double, 4> a;
 				for (; i < qt; i += 4)
 				{
-					_mm256_stream_pd(a.data(), _mm256_andnot_pd(m256s, _mm256_sub_pd(_mm256_loadu_pd(&q[i]), _mm256_loadu_pd(&l[i]))));
+					_mm256_stream_pd(a.data(), _mm256_andnot_pd(m256s, _mm256_sub_pd(_mm256_load_pd(&q[i]), _mm256_load_pd(&l[i]))));
 					s += a[0] + a[1] + a[2] + a[3];
 				}
 				for (; i < qn; ++i)
