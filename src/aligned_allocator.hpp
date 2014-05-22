@@ -1,6 +1,4 @@
-#include <cstdint>
-#include <vector>
-#include <iostream>
+#include <stdexcept>
 using namespace std;
 
 /**
