@@ -83,10 +83,9 @@ int main(int argc, char* argv[])
 		{
 			return scores[val1] > scores[val2];
 		});
-		for (size_t k = 0; k < n; ++k)
+		for (const size_t c : scase)
 		{
-			const size_t c = scase[k];
-			cout << k << '\t' << c << '\t' << headers[c] << '\t' << scores[c] << endl;
+			cout << c << '\t' << headers[c] << '\t' << scores[c] << endl;
 		}
 	}
 }
