@@ -6,43 +6,65 @@
 #include <cmath>
 using namespace std;
 
-int main(int argc, char* argv[])
+vector<double> parse(const string& line)
 {
-	cout.setf(ios::fixed, ios::floatfield);
-	cout << setprecision(4);
-	const size_t n = 23129083;
-	vector<array<float, 12>> db;
-	db.reserve(n);
-	string line;
-	for (ifstream ifs(argv[1]); getline(ifs, line);)
+	vector<double> r;
+	if (line.size())
 	{
-		array<float, 12> r;
-		for (size_t i = 0, b = 9, e; true; b = e + 1)
+		r.reserve(12);
+		for (size_t b = 0, e; true; b = e + 1)
 		{
-			e = line.find(',', b + 6);
-			if (e == string::npos)
+			if ((e = line.find(',', b + 6)) == string::npos)
 			{
-				r[i] = stof(line.substr(b));
+				r.push_back(stof(line.substr(b)));
 				break;
 			}
-			r[i++] = stof(line.substr(b, e - b));
+			r.push_back(stof(line.substr(b, e - b)));
 		}
-		db.push_back(r);
 	}
-	cout << "score" << endl;
-	for (size_t k = 0; k < 100; ++k)
+	return r;
+}
+
+int main(int argc, char* argv[])
+{
+	// Read the feature file.
+	string line;
+	vector<vector<double>> features;
+	features.reserve(23129083);
+	for (ifstream ifs(argv[1]); getline(ifs, line); features.push_back(parse(line)));
+	const size_t n = features.size();
+
+	// Read the header file.
+	vector<string> headers;
+	headers.reserve(n);
+	for (ifstream ifs(argv[2]); getline(ifs, line); headers.push_back(move(line)));
+
+	// Search a query.
+	cout.setf(ios::fixed, ios::floatfield);
+	cout << setprecision(4);
+	while (getline(cin, line))
 	{
-		const array<float, 12> q = db[k];
-		float m = 0;
-		for (const auto& r : db)
+		const auto& q = parse(line);
+		const size_t qn = q.size();
+		const double qv = 1.0 / qn;
+		vector<double> scores(n);
+		for (size_t j = 0; j < n; ++j)
 		{
-			float s = 0;
-			for (size_t i = 0; i < 12; ++i)
+			const auto& r = features[j];
+			double s = 0;
+			if (r.size() == qn)
 			{
-				s += fabs(q[i] - r[i]);
+				for (size_t i = 0; i < qn; ++i)
+				{
+					s += fabs(q[i] - r[i]);
+				}
+				s = 1 / (1 + s * qv);
 			}
-			if (m < s) m = s;
+			scores[j] = s;
 		}
-		cout << m << endl;
+		for (size_t j = 0; j < n; ++j)
+		{
+			cout << j << '\t' << scores[j] << endl;
+		}
 	}
 }
