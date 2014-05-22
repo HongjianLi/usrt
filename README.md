@@ -36,12 +36,18 @@ The generated objects will be placed in the `obj` folder, and the generated exec
 
 The `examples` folder contains example ligands in PDBQT format. For example, to extract the features of docked poses of ZINC00968327,
 
-    bin/usrt < examples/ZINC00968327.pdbqt
+    bin/encode < examples/ZINC00968327.pdbqt
 
 
 ## Change Log
 
-### 1.0.0 (under construction)
+### 2.0.0 (under development)
+
+* Renamed `usrt` to `encode`.
+* Added USR implementation.
+* Added similarity score calculation with AVX.
+
+### 1.0.0 (2014-05-01)
 
 * Initial release.
 
