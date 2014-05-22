@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 	headers.reserve(n);
 	for (ifstream ifs(argv[2]); getline(ifs, line); headers.push_back(move(line)));
 
-	// Search a query.
+	// Search the features for records similar to each of the queries.
 	cout.setf(ios::fixed, ios::floatfield);
 	cout << setprecision(4);
 	while (getline(cin, line))
