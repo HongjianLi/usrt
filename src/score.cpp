@@ -47,6 +47,9 @@ int main(int argc, char* argv[])
 	for (ifstream ifs(argv[2]); getline(ifs, line); headers.push_back(move(line)));
 
 	// Search the features for records similar to each of the queries.
+	vector<double> scores(n);
+	vector<size_t> scase(n);
+	array<double, 4> a;
 	cout.setf(ios::fixed, ios::floatfield);
 	cout << setprecision(4);
 	while (getline(cin, line))
@@ -55,7 +58,6 @@ int main(int argc, char* argv[])
 		const size_t qn = q.size();
 		const size_t qt = qn >> 2 << 2;
 		const double qv = 1.0 / qn;
-		vector<double> scores(n);
 		for (size_t k = 0; k < n; ++k)
 		{
 			const auto& l = features[k];
@@ -63,7 +65,6 @@ int main(int argc, char* argv[])
 			if (l.size() == qn)
 			{
 				size_t i = 0;
-				array<double, 4> a;
 				for (; i < qt; i += 4)
 				{
 					_mm256_stream_pd(a.data(), _mm256_andnot_pd(m256s, _mm256_sub_pd(_mm256_load_pd(&q[i]), _mm256_load_pd(&l[i]))));
@@ -77,9 +78,8 @@ int main(int argc, char* argv[])
 			}
 			scores[k] = s;
 		}
-		vector<size_t> scase(n);
 		iota(scase.begin(), scase.end(), 0);
-		sort(scase.begin(), scase.end(), [&scores](size_t val1, size_t val2)
+		sort(scase.begin(), scase.end(), [&scores](const size_t val1, const size_t val2)
 		{
 			return scores[val1] > scores[val2];
 		});
