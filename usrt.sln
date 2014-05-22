@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "usr", "usr.vcxproj", "{1788CA7B-A0E5-68A6-AC5C-6E5A5C099836}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "encode", "encode.vcxproj", "{1788CA7B-A0E5-68A6-AC5C-6E5A5C099836}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "usrt", "usrt.vcxproj", "{1788CA7B-A0E5-68A6-AC5C-6E5A5C099837}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "score", "score.vcxproj", "{1788CA7B-A0E5-68A6-AC5C-6E5A5C099837}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
