@@ -29,6 +29,6 @@ array<double, 3> moments(const vector<double>& dists, const size_t n, const doub
 		const auto d = dists[i] - m[0];
 		m[2] += d * d * d;
 	}
-	m[2] = cbrt(m[2] * v) / m[1];
+	m[2] = cbrt(m[2] * v);
 	return m;
 }
