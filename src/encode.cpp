@@ -5,8 +5,7 @@
 
 int main(int argc, char* argv[])
 {
-	const bool usr = argc < 2;
-	const bool branch = argc < 2 ? false : stoi(argv[1]);
+	const bool usr = argc > 1;
 	cout.setf(ios::fixed, ios::floatfield);
 	cout << setprecision(4);
 	while (true)
@@ -82,7 +81,7 @@ int main(int argc, char* argv[])
 			for (const auto& f : lig.frames)
 			{
 				// Find the number of atoms of the current frame.
-				const auto n = f.childYidx - f.rotorYidx + (branch ? f.branches.size() : 0);
+				const auto n = f.childYidx - f.rotorYidx + f.branches.size();
 
 				// Use rotorY as the only reference point.
 				const auto& r = lig.atoms[f.rotorYidx].coord;
@@ -94,12 +93,9 @@ int main(int argc, char* argv[])
 				{
 					dists[o++] = dist(r, lig.atoms[i].coord);
 				}
-				if (branch)
+				for (const auto b : f.branches)
 				{
-					for (const auto b : f.branches)
-					{
-						dists[o++] = dist(r, lig.atoms[lig.frames[b].rotorYidx].coord);
-					}
+					dists[o++] = dist(r, lig.atoms[lig.frames[b].rotorYidx].coord);
 				}
 				const auto m = moments(dists, n, 1.0 / n);
 
