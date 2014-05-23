@@ -5,8 +5,8 @@ USRT is a de novo ligand deduplication and clustering algorithm using Ultrafast 
 
 ## Supported operating systems and compilers
 
-* Arch Linux 3.13.11 x86_64 and clang 3.4
-* Windows 7 SP1 x64 and Visual Studio 2013 Update 1
+* Arch Linux 3.14.4 x86_64 and clang 3.4
+* Windows 7 SP1 x64 and Visual Studio 2013 Update 2
 
 
 ## Compilation
