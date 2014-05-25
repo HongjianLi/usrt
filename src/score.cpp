@@ -67,8 +67,9 @@ int main(int argc, char* argv[])
 				size_t i = 0;
 				for (; i < qt; i += 4)
 				{
-					_mm256_stream_pd(a.data(), _mm256_andnot_pd(m256s, _mm256_sub_pd(_mm256_load_pd(&q[i]), _mm256_load_pd(&l[i]))));
-					s += a[0] + a[1] + a[2] + a[3];
+					const auto m256a = _mm256_andnot_pd(m256s, _mm256_sub_pd(_mm256_load_pd(&q[i]), _mm256_load_pd(&l[i])));
+					_mm256_stream_pd(a.data(), _mm256_hadd_pd(m256a, m256a));
+					s += a[0] + a[2];
 				}
 				for (; i < qn; ++i)
 				{
