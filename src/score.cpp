@@ -21,10 +21,10 @@ vector<double, aligned_allocator<double, sizeof(__m256d)>> parse(const string& l
 		{
 			if ((e = line.find(',', b + 6)) == string::npos)
 			{
-				r.push_back(stof(line.substr(b)));
+				r.push_back(stod(line.substr(b)));
 				break;
 			}
-			r.push_back(stof(line.substr(b, e - b)));
+			r.push_back(stod(line.substr(b, e - b)));
 		}
 	}
 	return r;
