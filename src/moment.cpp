@@ -1,12 +1,12 @@
 #include <cmath>
 #include "moment.hpp"
 
-double dist(const array<double, 3>& p0, const array<double, 3>& p1)
+double dist2(const array<double, 3>& p0, const array<double, 3>& p1)
 {
 	const auto d0 = p0[0] - p1[0];
 	const auto d1 = p0[1] - p1[1];
 	const auto d2 = p0[2] - p1[2];
-	return sqrt(d0*d0 + d1*d1 + d2*d2);
+	return d0 * d0 + d1 * d1 + d2 * d2;
 }
 
 array<double, 3> moments(const vector<double>& dists, const size_t n, const double v)

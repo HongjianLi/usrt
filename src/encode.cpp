@@ -1,5 +1,7 @@
 #include <iostream>
 #include <iomanip>
+#include <cmath>
+#include <limits>
 #include "ligand.hpp"
 #include "moment.hpp"
 
@@ -32,11 +34,11 @@ int main(int argc, char* argv[])
 			// Find the reference points cst and fct.
 			array<double, 3> cst{};
 			array<double, 3> fct{};
-			double cst_dist =  9999;
-			double fct_dist = -9999;
+			double cst_dist = numeric_limits<double>::max();
+			double fct_dist = numeric_limits<double>::lowest();
 			for (const auto& a : lig.atoms)
 			{
-				const auto this_dist = dist(a.coord, ctd);
+				const auto this_dist = dist2(a.coord, ctd);
 				if (this_dist < cst_dist)
 				{
 					cst = a.coord;
@@ -51,10 +53,10 @@ int main(int argc, char* argv[])
 
 			// Find the reference point ftf.
 			array<double, 3> ftf{};
-			double ftf_dist = -9999;
+			double ftf_dist = numeric_limits<double>::lowest();
 			for (const auto& a : lig.atoms)
 			{
-				const auto this_dist = dist(a.coord, fct);
+				const auto this_dist = dist2(a.coord, fct);
 				if (this_dist > ftf_dist)
 				{
 					ftf = a.coord;
@@ -68,7 +70,7 @@ int main(int argc, char* argv[])
 				vector<double> dists(n);
 				for (size_t i = 0; i < n; ++i)
 				{
-					dists[i] = dist(lig.atoms[i].coord, rpt);
+					dists[i] = sqrt(dist2(lig.atoms[i].coord, rpt));
 				}
 				const auto m = moments(dists, n, v);
 				if (output) cout << ',';
@@ -91,11 +93,11 @@ int main(int argc, char* argv[])
 				size_t o = 0;
 				for (size_t i = f.rotorYidx; i < f.childYidx; ++i)
 				{
-					dists[o++] = dist(r, lig.atoms[i].coord);
+					dists[o++] = sqrt(dist2(r, lig.atoms[i].coord));
 				}
 				for (const auto b : f.branches)
 				{
-					dists[o++] = dist(r, lig.atoms[lig.frames[b].rotorYidx].coord);
+					dists[o++] = sqrt(dist2(r, lig.atoms[lig.frames[b].rotorYidx].coord));
 				}
 				const auto m = moments(dists, n, 1.0 / n);
 

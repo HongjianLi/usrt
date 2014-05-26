@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 
-double dist(const array<double, 3>& p0, const array<double, 3>& p1);
+double dist2(const array<double, 3>& p0, const array<double, 3>& p1);
 array<double, 3> moments(const vector<double>& dists, const size_t n, const double v);
 
 #endif
