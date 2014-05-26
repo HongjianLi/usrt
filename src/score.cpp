@@ -49,7 +49,8 @@ int main(int argc, char* argv[])
 	// Search the features for records similar to each of the queries.
 	vector<double> scores(n);
 	vector<size_t> scase(n);
-	array<double, 4> a;
+	array<array<double, 4>, 1> aa;
+	auto a = aa.front();
 	cout.setf(ios::fixed, ios::floatfield);
 	cout << setprecision(4);
 	while (getline(cin, line))
